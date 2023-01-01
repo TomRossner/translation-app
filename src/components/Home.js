@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Button from './Button';
-import {IoPause, IoPlay} from "react-icons/io5";
+import {IoPlay} from "react-icons/io5";
 import {RxReset} from "react-icons/rx";
 import {BsTranslate} from "react-icons/bs";
 import axios from "axios";
+import {API_KEY} from "../APIKEY";
 
 const Home = () => {
     const [text, setText] = useState("");
@@ -36,14 +37,14 @@ const Home = () => {
             method: 'POST',
             url: 'https://microsoft-translator-text.p.rapidapi.com/translate',
             params: {
-              'to': language.substring(0, 2),
+              'to': language.split("-")[0],
               'api-version': '3.0',
               profanityAction: 'NoAction',
               textType: 'plain'
             },
             headers: {
               'content-type': 'application/json',
-              'X-RapidAPI-Key': '3166312f4dmshe264424dac8cb19p11fee3jsn5713145c8876',
+              'X-RapidAPI-Key': API_KEY,
               'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com'
             },
             data: [{"Text":`${text}`}]
@@ -82,10 +83,6 @@ const Home = () => {
         loadLanguage();
     }, [voice])
 
-    useEffect(() => {
-        if (!text) return;
-        translate();
-    }, [voice])
   return (
     <div className='container'>
         <h1>Text to Speech</h1>
@@ -102,9 +99,9 @@ const Home = () => {
                 </select>
             : null}
             <div className='buttons-container'>
-                <Button type="button" onClick={translate} icon={<BsTranslate className='icon'/>}/>
-                <Button type="button" onClick={play} icon={<IoPlay className='icon'/>}/>
-                <Button type="button" onClick={resetText} icon={<RxReset className='icon'/>}/>
+                <Button type="button" title="Translate" onClick={translate} icon={<BsTranslate className='icon'/>}/>
+                <Button type="button" title="Play audio" onClick={play} icon={<IoPlay className='icon'/>}/>
+                <Button type="button" title="Reset" onClick={resetText} icon={<RxReset className='icon'/>}/>
             </div>
         </div>
     </div>

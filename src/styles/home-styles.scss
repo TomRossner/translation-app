@@ -24,3 +24,23 @@ h1{
         }
     }
 }
+
+
+@media screen and (min-width: 450px) and (max-width: 1024px) {
+    .text-areas-container{
+        width: 80%;
+        gap: 2rem;
+    }
+}
+
+@media screen  and (max-width: 450px){
+    .text-areas-container{
+        flex-direction: column;
+        gap: 2rem;
+        width: 100%;
+
+        textarea{
+            width: 100%;
+        }
+    }
+}
