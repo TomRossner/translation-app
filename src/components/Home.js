@@ -13,7 +13,6 @@ const Home = () => {
     const [error, setError] = useState("");
     const [language, setLanguage] = useState("");
     const [previewTranslation, setPreviewTranslation] = useState("");
-    const [para, setPara] = useState("");
 
     const handleChange = ({target: {value}}) => {
         setText(value);
@@ -56,7 +55,7 @@ const Home = () => {
             const {text: translatedText} = data[0].translations[0];
             return translatedText;
         } catch (error) {
-            setPara(error.response.data)
+            console.log(error.response.data)
         }
     }
 
@@ -70,7 +69,7 @@ const Home = () => {
                 speech.voice = voice;
                 speechSynthesis.speak(speech);
             } catch (error) {
-                setPara(error.response.data)
+                console.log(error.response.data)
             }
         };
     }
