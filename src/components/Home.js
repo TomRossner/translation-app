@@ -13,6 +13,7 @@ const Home = () => {
     const [error, setError] = useState("");
     const [language, setLanguage] = useState("");
     const [previewTranslation, setPreviewTranslation] = useState("");
+    const [para, setPara] = useState("");
 
     const handleChange = ({target: {value}}) => {
         setText(value);
@@ -33,36 +34,44 @@ const Home = () => {
     }
 
     const getTranslation = async () => {
-        const options = {
-            method: 'POST',
-            url: 'https://microsoft-translator-text.p.rapidapi.com/translate',
-            params: {
-              'to': language.split("-")[0],
-              'api-version': '3.0',
-              profanityAction: 'NoAction',
-              textType: 'plain'
-            },
-            headers: {
-              'content-type': 'application/json',
-              'X-RapidAPI-Key': API_KEY,
-              'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com'
-            },
-            data: [{"Text":`${text}`}]
-          };
-          
-        const {data} = await axios.request(options);
-        const {text: translatedText} = data[0].translations[0];
-        return translatedText;
+        try {
+            const options = {
+                method: 'POST',
+                url: 'https://microsoft-translator-text.p.rapidapi.com/translate',
+                params: {
+                  'to': language.split("-")[0],
+                  'api-version': '3.0',
+                  profanityAction: 'NoAction',
+                  textType: 'plain'
+                },
+                headers: {
+                  'content-type': 'application/json',
+                  'X-RapidAPI-Key': API_KEY,
+                  'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com'
+                },
+                data: [{"Text":`${text}`}]
+              };
+              
+            const {data} = await axios.request(options);
+            const {text: translatedText} = data[0].translations[0];
+            return translatedText;
+        } catch (error) {
+            setPara(error.response.data)
+        }
     }
 
     const play = async () => {
         if (!text) return setError("Cannot say nothing");
         else {
-            const speechText = await getTranslation();
-            const speech = new SpeechSynthesisUtterance(speechText);
-            speech.lang = voice.lang;
-            speech.voice = voice;
-            speechSynthesis.speak(speech);
+            try {
+                const speechText = await getTranslation();
+                const speech = new SpeechSynthesisUtterance(speechText);
+                speech.lang = voice.lang;
+                speech.voice = voice;
+                speechSynthesis.speak(speech);
+            } catch (error) {
+                setPara(error.response.data)
+            }
         };
     }
 
@@ -88,6 +97,7 @@ const Home = () => {
         <h1>Text to Speech</h1>
         <div className='content'>
             {!text && error && <p className='error'>{error}</p>}
+            {para && <p>{para}</p>}
             <div className='text-areas-container'>
                 <textarea onChange={handleChange} value={text}/>
                 <textarea readOnly disabled value={previewTranslation}/>
