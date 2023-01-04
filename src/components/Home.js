@@ -4,8 +4,7 @@ import {IoPlay} from "react-icons/io5";
 import {RxReset} from "react-icons/rx";
 import {BsTranslate} from "react-icons/bs";
 import axios from "axios";
-import dotenv from 'dotenv';
-dotenv.config();
+import { API_KEY } from '../API';
 
 const Home = () => {
     const [text, setText] = useState("");
@@ -46,7 +45,7 @@ const Home = () => {
                 },
                 headers: {
                   'content-type': 'application/json',
-                  'X-RapidAPI-Key': process.env.API_KEY,
+                  'X-RapidAPI-Key': API_KEY,
                   'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com'
                 },
                 data: [{"Text":`${text}`}]
@@ -70,7 +69,7 @@ const Home = () => {
                 speech.voice = voice;
                 speechSynthesis.speak(speech);
             } catch (error) {
-                setError(error.response.data);
+                setError(error.response);
             }
         };
     }
