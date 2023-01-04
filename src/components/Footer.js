@@ -20,7 +20,7 @@ const Footer = () => {
                 <VscGithubInverted className='icon' id='github'/>
             </a>
             <a
-                href="https://www.linkedin.com/in/tom-rossner-824b7a233/"
+                href="https://www.linkedin.com/in/tom-rossner"
                 target="_blank"
                 rel="noreferrer"
                 className='nav-link'

@@ -4,7 +4,8 @@ import {IoPlay} from "react-icons/io5";
 import {RxReset} from "react-icons/rx";
 import {BsTranslate} from "react-icons/bs";
 import axios from "axios";
-import {API_KEY} from "../APIKEY";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const Home = () => {
     const [text, setText] = useState("");
@@ -45,7 +46,7 @@ const Home = () => {
                 },
                 headers: {
                   'content-type': 'application/json',
-                  'X-RapidAPI-Key': API_KEY,
+                  'X-RapidAPI-Key': process.env.API_KEY,
                   'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com'
                 },
                 data: [{"Text":`${text}`}]
@@ -55,7 +56,7 @@ const Home = () => {
             const {text: translatedText} = data[0].translations[0];
             return translatedText;
         } catch (error) {
-            console.log(error.response.data)
+            setError(error.response.data);
         }
     }
 
@@ -69,7 +70,7 @@ const Home = () => {
                 speech.voice = voice;
                 speechSynthesis.speak(speech);
             } catch (error) {
-                console.log(error.response.data)
+                setError(error.response.data);
             }
         };
     }
@@ -96,7 +97,6 @@ const Home = () => {
         <h1>Text to Speech</h1>
         <div className='content'>
             {!text && error && <p className='error'>{error}</p>}
-            {para && <p>{para}</p>}
             <div className='text-areas-container'>
                 <textarea onChange={handleChange} value={text}/>
                 <textarea readOnly disabled value={previewTranslation}/>
